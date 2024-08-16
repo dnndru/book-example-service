@@ -1,0 +1,60 @@
+spring:
+  application:
+    name: book-example-service
+  profiles:
+    active:
+      - ${ACTIVE_SPRING_PROFILE:local}
+# SERVER PORT
+server:
+  port: 8186
+  
+#LOCAL CONFIG  
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  # DATABASE CONNECTION CONFIG (using mysql)
+  datasource:
+    url: jdbc:mysql://localhost:8181/spring_demo?useSSL=false
+    username: root
+    password: #######
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    
+---
+# hibernate properties
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+
+# KEYCLOACK CONFIG
+keycloak:
+  enabled: true
+  auth-server-url: http://localhost:8080/auth
+  realm: demo-realm
+  resource: spring-demo
+  credentials: 
+    secret: #####################
+  use-resource-role-mappings: true
+  bearer-only: true
+  ssl-required: external
+  
+---
+# REDIS CONFIG
+spring:
+  redis:
+    host: localhost #172.20.103.27
+    port: 6379 #31162
+    database: 0
+redis:
+  client-type: lettuce
+  timeout: 15s
+  connection-timeout: 30s
+cache:
+    ttl: 600000 #ms (10 minutes)
+    promise-ttl: 60
